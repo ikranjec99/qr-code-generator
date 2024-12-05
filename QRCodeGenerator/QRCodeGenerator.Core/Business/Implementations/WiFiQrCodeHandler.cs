@@ -1,5 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using QRCodeGenerator.Core.Business.Constants;
+using QRCodeGenerator.Core.Business.Exceptions;
+using QRCodeGenerator.Core.Business.Extensions;
 using QRCodeGenerator.Core.Business.Helpers;
 using QRCodeGenerator.Core.Business.Interfaces;
 using QRCodeGenerator.Core.Business.Models;
@@ -21,6 +23,8 @@ public class WiFiQrCodeHandler : IWiFiQrCodeHandler
     
     public async Task<byte[]> GenerateWiFiQrCode(WiFiQrCodeRequest request)
     {
+        _logger.LogTryGenerateWiFiQrCode(request.Ssid);
+        
         var generator = new PayloadGenerator.WiFi(request.Ssid, request.Password, 
             PayloadGenerator.WiFi.Authentication.WPA2);
 
@@ -28,6 +32,10 @@ public class WiFiQrCodeHandler : IWiFiQrCodeHandler
         
         string payload = generator.ToString();
 
-        return await Task.FromResult(QrCodeGeneratorHelper.GenerateCode(payload, configuration.PixelPerModule));
+        var result = QrCodeGeneratorHelper.GenerateCode(payload, configuration.PixelPerModule);
+        
+        _logger.LogWiFiQrCodeGenerated(request.Ssid);
+
+        return await Task.FromResult(result);
     }
 }

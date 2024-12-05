@@ -19,12 +19,7 @@ public class Program
         var configuration = builder.Configuration;
         var appSettings = configuration.Get<AppSettings>();
 
-        var jsonSerializerOptions = new JsonSerializerOptions
-        {
-            WriteIndented = true
-        };
-
-        Console.WriteLine(JsonSerializer.Serialize(appSettings, jsonSerializerOptions));
+        Console.WriteLine(JsonSerializer.Serialize(appSettings, JsonSerializerExtensions.GetJsonSerializerOptions()));
 
         // Add services to the contianer.
         builder.Services.AddServices(configuration, appSettings);

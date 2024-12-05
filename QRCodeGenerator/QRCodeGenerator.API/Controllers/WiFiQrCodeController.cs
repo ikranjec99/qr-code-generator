@@ -17,7 +17,7 @@ public class WiFiQrCodeController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Generate(WiFiQrCodeRequest request)
     {
-        var qrCodeAsPngByteArr = await _wiFiQrCodeHandler.GenerateWiFiQrCode(request);
-        return File(qrCodeAsPngByteArr, MediaType.Png);
+        var byteArray = await _wiFiQrCodeHandler.GenerateWiFiQrCode(request);
+        return File(byteArray, MediaType.Png);
     }
 }

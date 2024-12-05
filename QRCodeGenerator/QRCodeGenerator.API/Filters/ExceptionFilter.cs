@@ -5,6 +5,7 @@ using Microsoft.Net.Http.Headers;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using System.Net;
 using System.Text.Json;
+using QRCodeGenerator.API.Extensions;
 
 namespace QRCodeGenerator.API.Filters;
 
@@ -13,9 +14,7 @@ public class ExceptionFilter : IExceptionFilter
     private readonly Serilog.ILogger _logger;
 
     public ExceptionFilter(Serilog.ILogger logger)
-    {
-        _logger = logger;
-    }
+        => _logger = logger;
 
     public void OnException(ExceptionContext context)
     {
@@ -29,25 +28,15 @@ public class ExceptionFilter : IExceptionFilter
 
 
         if (statusCode >= 500)
-            _logger.Error("Exception: {Exception}", JsonSerializer.Serialize(context.Exception, BuildSerializerSettings()));
+            _logger.Error("Exception: {Exception}", JsonSerializer.Serialize(context.Exception, JsonSerializerExtensions.GetJsonSerializerOptions()));
 
         context.ExceptionHandled = true;
     }
 
-    internal static HttpStatusCode MapExceptionToStatusCode(Exception e) => e switch
+    private static HttpStatusCode MapExceptionToStatusCode(Exception e) => e switch
     {
         NotImplementedException => HttpStatusCode.NotImplemented,
 
         _ => HttpStatusCode.InternalServerError
     };
-
-    private static JsonSerializerOptions BuildSerializerSettings()
-    {
-        var settings = new JsonSerializerOptions
-        {
-            WriteIndented = true
-        };
-
-        return settings;
-    }
 }
