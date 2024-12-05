@@ -17,6 +17,10 @@
     {
       "PixelPerModule": "20",
       "QrCodeType": "1"
+    },
+    {
+      "PixelPerModule": "20",
+      "QrCodeType": "2"
     }
   ]
 }
