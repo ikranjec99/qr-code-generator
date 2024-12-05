@@ -19,7 +19,8 @@ public static class ServiceCollectionExtensions
     {
 
         services
-            .AddScoped<IWiFiQrCodeHandler, WiFiQrCodeHandler>();
+            .AddScoped<IWiFiHandler, WiFiHandler>()
+            .AddScoped<IWhatsAppMessageHandler, WhatsAppMessageHandler>();
         
         return services;
     }

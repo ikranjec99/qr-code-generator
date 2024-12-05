@@ -2,12 +2,12 @@
 
 namespace QRCodeGenerator.Core.Business.Interfaces;
 
-public interface IWiFiQrCodeHandler
+public interface IWiFiHandler
 {
     /// <summary>
     /// Generates WiFi QR code
     /// </summary>
     /// <param name="request">WiFi QR code request object</param>
     /// <returns></returns>
-    Task<byte[]> GenerateWiFiQrCode(WiFiQrCodeRequest request);
+    Task<byte[]> GenerateQrCode(WiFiQrCodeRequest request);
 }

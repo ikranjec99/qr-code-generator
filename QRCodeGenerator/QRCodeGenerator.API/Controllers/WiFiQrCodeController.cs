@@ -6,18 +6,18 @@ using QRCodeGenerator.Core.Business.Models;
 namespace QRCodeGenerator.API.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/generate")]
 public class WiFiQrCodeController : ControllerBase
 {
-    private readonly IWiFiQrCodeHandler _wiFiQrCodeHandler;
+    private readonly IWiFiHandler _wiFiHandler;
     
-    public WiFiQrCodeController(IWiFiQrCodeHandler wiFiQrCodeHandler)
-        => _wiFiQrCodeHandler = wiFiQrCodeHandler;
+    public WiFiQrCodeController(IWiFiHandler wiFiHandler)
+        => _wiFiHandler = wiFiHandler;
 
-    [HttpPost]
+    [HttpPost("wifi")]
     public async Task<IActionResult> Generate(WiFiQrCodeRequest request)
     {
-        var byteArray = await _wiFiQrCodeHandler.GenerateWiFiQrCode(request);
+        var byteArray = await _wiFiHandler.GenerateQrCode(request);
         return File(byteArray, MediaType.Png);
     }
 }

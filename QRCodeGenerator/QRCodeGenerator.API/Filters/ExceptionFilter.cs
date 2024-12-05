@@ -5,7 +5,9 @@ using Microsoft.Net.Http.Headers;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using System.Net;
 using System.Text.Json;
+using Newtonsoft.Json;
 using QRCodeGenerator.API.Extensions;
+using QRCodeGenerator.Core.Business.Exceptions;
 
 namespace QRCodeGenerator.API.Filters;
 
@@ -28,14 +30,18 @@ public class ExceptionFilter : IExceptionFilter
 
 
         if (statusCode >= 500)
-            _logger.Error("Exception: {Exception}", JsonSerializer.Serialize(context.Exception, JsonSerializerExtensions.GetJsonSerializerOptions()));
+            _logger.Error("Exception: {Exception}", JsonConvert.SerializeObject(context.Exception, Formatting.Indented));
 
         context.ExceptionHandled = true;
     }
 
     private static HttpStatusCode MapExceptionToStatusCode(Exception e) => e switch
     {
+        InvalidMsisdnException => HttpStatusCode.BadRequest,
+        
         NotImplementedException => HttpStatusCode.NotImplemented,
+        
+        QrCodeConfigurationNotImplementedException => HttpStatusCode.NotImplemented,
 
         _ => HttpStatusCode.InternalServerError
     };

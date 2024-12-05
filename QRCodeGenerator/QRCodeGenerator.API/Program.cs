@@ -1,6 +1,7 @@
 using QRCodeGenerator.API.Extensions;
 using QRCodeGenerator.API.Settings;
-using System.Text.Json;
+using Newtonsoft.Json;
+using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace QRCodeGenerator.API;
 
@@ -19,7 +20,7 @@ public class Program
         var configuration = builder.Configuration;
         var appSettings = configuration.Get<AppSettings>();
 
-        Console.WriteLine(JsonSerializer.Serialize(appSettings, JsonSerializerExtensions.GetJsonSerializerOptions()));
+        Console.WriteLine(JsonConvert.SerializeObject(appSettings, Formatting.Indented));
 
         // Add services to the contianer.
         builder.Services.AddServices(configuration, appSettings);
