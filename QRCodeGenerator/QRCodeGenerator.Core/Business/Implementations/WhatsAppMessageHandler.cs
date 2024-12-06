@@ -44,7 +44,7 @@ public partial class WhatsAppMessageHandler : IWhatsAppMessageHandler
 
             return await Task.FromResult(result);
         }
-        catch (InvalidMsisdnException)
+        catch (NumberParseException)
         {
             _logger.LogInvalidMsisdn();
             throw new InvalidMsisdnException();

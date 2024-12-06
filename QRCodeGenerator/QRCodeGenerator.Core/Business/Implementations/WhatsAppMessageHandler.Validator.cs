@@ -14,6 +14,12 @@ public partial class WhatsAppMessageHandler
             throw new QrCodeConfigurationNotImplementedException((int)QrCodeType.WhatsApp);
         }
 
-        _phoneNumberUtil.Parse(msisdn, null);
+        if (string.IsNullOrWhiteSpace(msisdn))
+            throw new InvalidMsisdnException();
+        
+        var phoneNumber = _phoneNumberUtil.Parse(msisdn, null);
+
+        if (!_phoneNumberUtil.IsValidNumber(phoneNumber))
+            throw new InvalidMsisdnException();
     }
 }
