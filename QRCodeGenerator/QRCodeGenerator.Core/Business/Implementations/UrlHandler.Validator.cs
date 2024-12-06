@@ -9,7 +9,9 @@ public partial class UrlHandler
 {
     private void EnsureGenerateAllowed(string url)
     {
-        if (_configuration is null)
+        var configuration = _configuration.FirstOrDefault(x => x.QrCodeType == QrCodeType.Url);
+        
+        if (configuration is null)
         {
             _logger.LogQrCodeConfigurationNotImplemented((int)QrCodeType.Url);
             throw new QrCodeConfigurationNotImplementedException((int)QrCodeType.Url);

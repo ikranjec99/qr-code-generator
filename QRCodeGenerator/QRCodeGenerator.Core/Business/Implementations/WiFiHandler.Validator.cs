@@ -8,7 +8,9 @@ public partial class WiFiHandler
 {
     private void EnsureGenerateAllowed()
     {
-        if (_configuration is null)
+        var configuration = _configuration.FirstOrDefault(x => x.QrCodeType == QrCodeType.WiFi);
+        
+        if (configuration is null)
         {
             _logger.LogQrCodeConfigurationNotImplemented((int)QrCodeType.WiFi);
             throw new QrCodeConfigurationNotImplementedException((int)QrCodeType.WiFi);

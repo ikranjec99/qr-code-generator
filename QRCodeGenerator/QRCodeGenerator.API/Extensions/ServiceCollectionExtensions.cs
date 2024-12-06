@@ -19,9 +19,10 @@ public static class ServiceCollectionExtensions
     {
 
         services
-            .AddScoped<IWiFiHandler, WiFiHandler>()
+            .AddScoped<ISmsHandler, SmsHandler>()
+            .AddScoped<IUrlHandler, UrlHandler>()
             .AddScoped<IWhatsAppMessageHandler, WhatsAppMessageHandler>()
-            .AddScoped<IUrlHandler, UrlHandler>();
+            .AddScoped<IWiFiHandler, WiFiHandler>();
         
         return services;
     }
