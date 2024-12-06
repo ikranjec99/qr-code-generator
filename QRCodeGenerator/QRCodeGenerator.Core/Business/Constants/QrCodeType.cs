@@ -3,5 +3,6 @@
 public enum QrCodeType
 {
     WiFi = 1,
-    WhatsApp = 2
+    WhatsApp = 2,
+    Url = 3
 }

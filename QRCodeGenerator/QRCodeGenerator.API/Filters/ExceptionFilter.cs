@@ -4,9 +4,7 @@ using MediaType = QRCodeGenerator.Core.Business.Constants.MediaType;
 using Microsoft.Net.Http.Headers;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using System.Net;
-using System.Text.Json;
 using Newtonsoft.Json;
-using QRCodeGenerator.API.Extensions;
 using QRCodeGenerator.Core.Business.Exceptions;
 
 namespace QRCodeGenerator.API.Filters;
@@ -38,6 +36,8 @@ public class ExceptionFilter : IExceptionFilter
     private static HttpStatusCode MapExceptionToStatusCode(Exception e) => e switch
     {
         InvalidMsisdnException => HttpStatusCode.BadRequest,
+
+        InvalidUrlException => HttpStatusCode.BadRequest,
         
         NotImplementedException => HttpStatusCode.NotImplemented,
         
