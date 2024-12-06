@@ -10,6 +10,9 @@ public static class LoggerExtensions
     public static void LogInvalidUrl(this ILogger logger, string url)
         => logger.LogInformation($"Invalid URL {url}");
 
+    public static void LogTryGenerateSmsQrCode(this ILogger logger)
+        => logger.LogInformation($"Trying to generate SMS QR code");
+    
     public static void LogTryGenerateUrlQrCode(this ILogger logger, string url)
         => logger.LogInformation($"Trying to generate URL QR code for URL {url}");
 
@@ -19,6 +22,9 @@ public static class LoggerExtensions
     public static void LogTryGenerateWiFiQrCode(this ILogger logger, string ssid)
         => logger.LogInformation($"Trying to generate Wi-Fi QR code for SSID {ssid}");
 
+    public static void LogSmsQrCodeGenerated(this ILogger logger)
+        => logger.LogInformation("Sms QR code generated");
+    
     public static void LogUrlQrCodeGenerated(this ILogger logger, string url)
         => logger.LogInformation($"QR code generated for URL {url}");
 
