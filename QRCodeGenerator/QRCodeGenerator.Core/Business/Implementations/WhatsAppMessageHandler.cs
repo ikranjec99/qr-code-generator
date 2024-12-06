@@ -11,7 +11,7 @@ using QRCoder;
 
 namespace QRCodeGenerator.Core.Business.Implementations;
 
-public class WhatsAppMessageHandler : IWhatsAppMessageHandler
+public partial class WhatsAppMessageHandler : IWhatsAppMessageHandler
 {
     private readonly IQrCodeConfiguration[] _configuration;
     private readonly ILogger _logger;
@@ -30,17 +30,11 @@ public class WhatsAppMessageHandler : IWhatsAppMessageHandler
         {
             _logger.LogTryGenerateWhatsAppMessageQrCode();
 
-            var phoneNumber = _phoneNumberUtil.Parse(request.Msisdn, null);
+            EnsureGenerateAllowed(request.Msisdn);
 
             var generator = new PayloadGenerator.WhatsAppMessage(request.Msisdn, request.Message);
 
             var configuration = _configuration.FirstOrDefault(x => x.QrCodeType == QrCodeType.WhatsApp);
-
-            if (configuration is null)
-            {
-                _logger.LogQrCodeConfigurationNotImplemented((int)QrCodeType.WhatsApp);
-                throw new QrCodeConfigurationNotImplementedException((int)QrCodeType.WhatsApp);
-            }
 
             string payload = generator.ToString();
 

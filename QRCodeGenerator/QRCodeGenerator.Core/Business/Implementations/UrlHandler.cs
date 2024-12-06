@@ -6,39 +6,38 @@ using QRCodeGenerator.Core.Business.Helpers;
 using QRCodeGenerator.Core.Business.Interfaces;
 using QRCodeGenerator.Core.Business.Models;
 using QRCodeGenerator.Core.Configuration;
-using QRCoder;
+using static QRCoder.PayloadGenerator;
 
 namespace QRCodeGenerator.Core.Business.Implementations;
 
-public partial class WiFiHandler : IWiFiHandler
+public partial class UrlHandler : IUrlHandler
 {
     private readonly IQrCodeConfiguration[] _configuration;
     private readonly ILogger _logger;
 
-    public WiFiHandler(ILogger<IQrCodeConfiguration> logger, IQrCodeConfiguration[] configuration)
+    public UrlHandler(ILogger<IUrlHandler> logger, IQrCodeConfiguration[] configuration)
     {
-        _logger = logger;
         _configuration = configuration;
+        _logger = logger;
     }
-    
-    public async Task<byte[]> GenerateQrCode(WiFiQrCodeRequest request)
+
+    public async Task<byte[]> GenerateQrCode(UrlQrCodeRequest request)
     {
         try
         {
-            _logger.LogTryGenerateWiFiQrCode(request.Ssid);
+            _logger.LogTryGenerateUrlQrCode(request.Url);
 
-            EnsureGenerateAllowed();
+            EnsureGenerateAllowed(request.Url);
 
-            var generator = new PayloadGenerator.WiFi(request.Ssid, request.Password, 
-                PayloadGenerator.WiFi.Authentication.WPA2);
+            var url = new Url(request.Url);
 
-            var configuration = _configuration.FirstOrDefault(x => x.QrCodeType == QrCodeType.WiFi);
-        
-            string payload = generator.ToString();
+            var configuration = _configuration.FirstOrDefault(x => x.QrCodeType == QrCodeType.Url);
+
+            string payload = url.ToString();
 
             var result = QrCodeGeneratorHelper.GenerateCode(payload, configuration.PixelPerModule);
-        
-            _logger.LogWiFiQrCodeGenerated(request.Ssid);
+
+            _logger.LogUrlQrCodeGenerated(request.Url);
 
             return await Task.FromResult(result);
         }
