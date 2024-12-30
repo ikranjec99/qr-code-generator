@@ -9,20 +9,32 @@ namespace QRCodeGenerator.API.Controllers;
 [Route("api/generate")]
 public class QrCodeGeneratorController : ControllerBase
 {
+    private readonly IMsisdnHandler _msisdnHandler;
     private readonly ISmsHandler _smsHandler;
     private readonly IUrlHandler _urlHandler;
     private readonly IWhatsAppMessageHandler _whatsAppMessageHandler;
     private readonly IWiFiHandler _wiFiHandler;
 
-    public QrCodeGeneratorController(ISmsHandler smsHandler,
+    public QrCodeGeneratorController(
+        IMsisdnHandler msisdnHandler,
+        ISmsHandler smsHandler,
         IUrlHandler urlHandler,
         IWhatsAppMessageHandler whatsAppMessageHandler,
-        IWiFiHandler wiFiHandler)
+        IWiFiHandler wiFiHandler
+    )
     {
+        _msisdnHandler = msisdnHandler;
         _smsHandler = smsHandler;
         _urlHandler = urlHandler;
         _whatsAppMessageHandler = whatsAppMessageHandler;
         _wiFiHandler = wiFiHandler;
+    }
+
+    [HttpPost("msisdn")]
+    public async Task<IActionResult> Generate(MsisdnQrCodeRequest request)
+    {
+        var byteArray = await _msisdnHandler.GenerateQrCode(request);
+        return File(byteArray, MediaType.Png);
     }
     
     [HttpPost("sms")]

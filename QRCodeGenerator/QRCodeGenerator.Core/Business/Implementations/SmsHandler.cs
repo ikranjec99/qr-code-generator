@@ -17,7 +17,9 @@ public partial class SmsHandler : ISmsHandler
     private readonly IQrCodeConfiguration[] _configuration;
     private readonly PhoneNumberUtil _phoneNumberUtil;
 
-    public SmsHandler(ILogger<SmsHandler> logger, IQrCodeConfiguration[] configuration)
+    public SmsHandler(
+        ILogger<SmsHandler> logger, 
+        IQrCodeConfiguration[] configuration)
     {
         _configuration = configuration;
         _logger = logger;
@@ -28,7 +30,7 @@ public partial class SmsHandler : ISmsHandler
     {
         try
         {
-            _logger.LogTryGenerateSmsQrCode();
+            _logger.LogTryGenerateQrCode(QrCodeType.Sms);
 
             EnsureGenerateAllowed(request.Msisdn);
 
@@ -40,7 +42,7 @@ public partial class SmsHandler : ISmsHandler
 
             var result = QrCodeGeneratorHelper.GenerateCode(payload, configuration.PixelPerModule);
 
-            _logger.LogSmsQrCodeGenerated();
+            _logger.LogQrCodeGenerated(QrCodeType.Sms);
 
             return await Task.FromResult(result);
         }

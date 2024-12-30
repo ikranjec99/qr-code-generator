@@ -1,4 +1,5 @@
 using Microsoft.Extensions.Logging;
+using QRCodeGenerator.Core.Business.Constants;
 
 namespace QRCodeGenerator.Core.Business.Extensions;
 
@@ -10,29 +11,11 @@ public static class LoggerExtensions
     public static void LogInvalidUrl(this ILogger logger, string url)
         => logger.LogInformation($"Invalid URL {url}");
 
-    public static void LogTryGenerateSmsQrCode(this ILogger logger)
-        => logger.LogInformation($"Trying to generate SMS QR code");
-    
-    public static void LogTryGenerateUrlQrCode(this ILogger logger, string url)
-        => logger.LogInformation($"Trying to generate URL QR code for URL {url}");
+    public static void LogTryGenerateQrCode(this ILogger logger, QrCodeType type)
+        => logger.LogInformation($"Trying to generate {type} QR code");
 
-    public static void LogTryGenerateWhatsAppMessageQrCode(this ILogger logger)
-        => logger.LogInformation("Trying to generate WhatsApp message QR code");
-    
-    public static void LogTryGenerateWiFiQrCode(this ILogger logger, string ssid)
-        => logger.LogInformation($"Trying to generate Wi-Fi QR code for SSID {ssid}");
-
-    public static void LogSmsQrCodeGenerated(this ILogger logger)
-        => logger.LogInformation("Sms QR code generated");
-    
-    public static void LogUrlQrCodeGenerated(this ILogger logger, string url)
-        => logger.LogInformation($"QR code generated for URL {url}");
-
-    public static void LogWhatsAppMessageQrCodeGenerated(this ILogger logger)
-        => logger.LogInformation("WhatsApp message QR code generated");
-    
-    public static void LogWiFiQrCodeGenerated(this ILogger logger, string ssid)
-        => logger.LogInformation($"Wi-Fi QR code generated for SSID {ssid}");
+    public static void LogQrCodeGenerated(this ILogger logger, QrCodeType type)
+        => logger.LogInformation($"{type} QR code generated");
 
     public static void LogQrCodeConfigurationNotImplemented(this ILogger logger, int id)
         => logger.LogInformation($"QR code configuration not implemented for id {id}");

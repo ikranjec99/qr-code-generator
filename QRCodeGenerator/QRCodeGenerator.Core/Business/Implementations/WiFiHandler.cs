@@ -25,7 +25,7 @@ public partial class WiFiHandler : IWiFiHandler
     {
         try
         {
-            _logger.LogTryGenerateWiFiQrCode(request.Ssid);
+            _logger.LogTryGenerateQrCode(QrCodeType.WiFi);
 
             EnsureGenerateAllowed();
 
@@ -38,7 +38,7 @@ public partial class WiFiHandler : IWiFiHandler
 
             var result = QrCodeGeneratorHelper.GenerateCode(payload, configuration.PixelPerModule);
         
-            _logger.LogWiFiQrCodeGenerated(request.Ssid);
+            _logger.LogQrCodeGenerated(QrCodeType.WiFi);
 
             return await Task.FromResult(result);
         }

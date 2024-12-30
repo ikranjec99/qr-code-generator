@@ -19,6 +19,7 @@ public static class ServiceCollectionExtensions
     {
 
         services
+            .AddScoped<IMsisdnHandler, MsisdnHandler>()
             .AddScoped<ISmsHandler, SmsHandler>()
             .AddScoped<IUrlHandler, UrlHandler>()
             .AddScoped<IWhatsAppMessageHandler, WhatsAppMessageHandler>()
