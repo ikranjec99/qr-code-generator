@@ -11,36 +11,38 @@ using QRCoder;
 
 namespace QRCodeGenerator.Core.Business.Implementations;
 
-public partial class WhatsAppMessageHandler : IWhatsAppMessageHandler
+public partial class MsisdnHandler : IMsisdnHandler
 {
-    private readonly IQrCodeConfiguration[] _configuration;
     private readonly ILogger _logger;
+    private readonly IQrCodeConfiguration[] _configuration;
     private readonly PhoneNumberUtil _phoneNumberUtil;
-    
-    public WhatsAppMessageHandler(ILogger<IWhatsAppMessageHandler> logger, IQrCodeConfiguration[] configuration)
+
+    public MsisdnHandler(
+        ILogger<MsisdnHandler> logger,
+        IQrCodeConfiguration[] configuration)
     {
         _configuration = configuration;
         _logger = logger;
         _phoneNumberUtil = PhoneNumberUtil.GetInstance();
     }
     
-    public async Task<byte[]> GenerateQrCode(WhatsAppMessageQrCodeRequest request)
+    public async Task<byte[]> GenerateQrCode(MsisdnQrCodeRequest request)
     {
         try
         {
-            _logger.LogTryGenerateQrCode(QrCodeType.WhatsApp);
-
+            _logger.LogTryGenerateQrCode(QrCodeType.PhoneNumber);
+            
             EnsureGenerateAllowed(request.Msisdn);
-
-            var generator = new PayloadGenerator.WhatsAppMessage(request.Msisdn, request.Message);
-
-            var configuration = _configuration.FirstOrDefault(x => x.QrCodeType == QrCodeType.WhatsApp);
-
+            
+            var generator = new PayloadGenerator.PhoneNumber(request.Msisdn);
+            
+            var configuration = _configuration.First(x => x.QrCodeType == QrCodeType.PhoneNumber);
+            
             string payload = generator.ToString();
-
+            
             var result = QrCodeGeneratorHelper.GenerateCode(payload, configuration.PixelPerModule);
 
-            _logger.LogQrCodeGenerated(QrCodeType.WhatsApp);
+            _logger.LogQrCodeGenerated(QrCodeType.Sms);
 
             return await Task.FromResult(result);
         }

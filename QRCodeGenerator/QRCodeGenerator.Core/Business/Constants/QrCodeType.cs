@@ -5,5 +5,6 @@ public enum QrCodeType
     WiFi = 1,
     WhatsApp = 2,
     Url = 3,
-    Sms = 4
+    Sms = 4,
+    PhoneNumber = 5
 }

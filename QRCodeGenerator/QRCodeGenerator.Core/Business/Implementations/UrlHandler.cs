@@ -25,7 +25,7 @@ public partial class UrlHandler : IUrlHandler
     {
         try
         {
-            _logger.LogTryGenerateUrlQrCode(request.Url);
+            _logger.LogTryGenerateQrCode(QrCodeType.Url);
 
             EnsureGenerateAllowed(request.Url);
 
@@ -37,7 +37,7 @@ public partial class UrlHandler : IUrlHandler
 
             var result = QrCodeGeneratorHelper.GenerateCode(payload, configuration.PixelPerModule);
 
-            _logger.LogUrlQrCodeGenerated(request.Url);
+            _logger.LogQrCodeGenerated(QrCodeType.Url);
 
             return await Task.FromResult(result);
         }
